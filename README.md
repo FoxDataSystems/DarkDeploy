@@ -4,14 +4,14 @@ Automated PowerShell script to set up a complete Garry's Mod DarkRP server from 
 
 ## Features
 
-- 🚀 **One-Click Installation** - Complete server setup with a single script
-- 🎮 **Recommended Install Option** - Installs everything automatically (Server + ULX + Content)
-- ⚙️ **Interactive Menu** - Easy-to-use menu system for all operations
-- 🔧 **Fully Automated** - Can run completely non-interactively with parameters
-- 📦 **Auto-Detection** - Automatically detects existing SteamCMD installations
-- 🗺️ **Map & Addon Download** - Downloads maps and Workshop collections automatically
-- 👮 **Admin Setup** - Configures ULX/ULib admin mod with pre-configured admin users
-- 🔐 **Server Configuration** - Interactive setup for server name, RCON password, and Steam token
+- **One-Click Installation** - Complete server setup with a single script
+- **Recommended Install Option** - Installs everything automatically (Server + ULX + Content)
+- **Interactive Menu** - Easy-to-use menu system for all operations
+- **Fully Automated** - Can run completely non-interactively with parameters
+- **Auto-Detection** - Automatically detects existing SteamCMD installations
+- **Map & Addon Download** - Downloads maps and Workshop collections automatically
+- **Admin Setup** - Configures ULX/ULib admin mod with pre-configured admin users
+- **Server Configuration** - Interactive setup for server name, RCON password, and Steam token
 
 ## Requirements
 
@@ -60,11 +60,11 @@ The script provides a menu with the following options:
 
 ### Recommended Install Includes:
 
-- ✅ **SteamCMD** - Game server downloader
-- ✅ **Garry's Mod Dedicated Server** - Server files
-- ✅ **DarkRP Gamemode** - Roleplay gamemode
-- ✅ **ULX/ULib** - Admin mod system
-- ✅ **Standard Content**:
+- **SteamCMD** - Game server downloader
+- **Garry's Mod Dedicated Server** - Server files
+- **DarkRP Gamemode** - Roleplay gamemode
+- **ULX/ULib** - Admin mod system
+- **Standard Content**:
   - Map: `rp_downtown_v4c_v2` (Downloaded from GitHub)
   - Collection: DarkRP Mod Collection (ID: 2079133718)
 
@@ -281,3 +281,4 @@ This script is provided as-is. Make sure to:
 - Configure firewall properly
 - Use strong RCON passwords
 - Keep server files updated
+
