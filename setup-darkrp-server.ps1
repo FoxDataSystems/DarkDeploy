@@ -1306,7 +1306,7 @@ if not exist "srcds.exe" (
     pause
     exit /b 1
 )
-srcds.exe -console -game garrysmod +gamemode darkrp +map rp_downtown_v2 +maxplayers 32 +host_workshop_collection 2079133718$SteamTokenParam
+srcds.exe -console -game garrysmod +gamemode darkrp +map rp_downtown_v4c_v2 +maxplayers 32 +host_workshop_collection 1436536957$SteamTokenParam
 pause
 "@
     
@@ -1334,7 +1334,7 @@ if ($Script:InstallRecommended) {
         Write-Host ""
         
         if (Test-Path "$PSScriptRoot\download-standard-content.ps1") {
-            Write-Host "Downloading rp_downtown_v2 map and DarkRP Mod Collection..." -ForegroundColor Yellow
+            Write-Host "Downloading rp_downtown_v4c_v2 map and DarkRP Mod Pack collection..." -ForegroundColor Yellow
             Write-Host ""
             
             # Execute the download script (it will handle its own prompts)
@@ -1391,7 +1391,7 @@ else {
     Write-Host "DOWNLOAD ADDONS & MAPS:" -ForegroundColor Magenta
     Write-Host "To download standard DarkRP content:" -ForegroundColor Yellow
     Write-Host "1. Run the setup script again and choose option 6" -ForegroundColor Cyan
-    Write-Host "   This will download rp_downtown_v2 map and DarkRP Mod Collection" -ForegroundColor Gray
+    Write-Host "   This will download rp_downtown_v4c_v2 map and DarkRP Mod Pack collection" -ForegroundColor Gray
     Write-Host "2. Or run: .\download-standard-content.ps1" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "For custom addons and maps:" -ForegroundColor Yellow
