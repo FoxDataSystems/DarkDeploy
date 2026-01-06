@@ -38,11 +38,14 @@ if (-not (Test-Path $SteamCMDExe)) {
 }
 
 # Workshop IDs
-$DowntownMapId = "107982746"  # rp_downtown_v2
 $DarkRPCollectionId = "2079133718"  # DarkRP Mod Collection
 
+# GitHub map download
+$MapGitHubUrl = "https://github.com/KryptonNetworks/rp_downtown_v4c_v2/raw/master/rp_downtown_v4c_v2.bsp"
+$MapName = "rp_downtown_v4c_v2"
+
 Write-Host "This will download:" -ForegroundColor Yellow
-Write-Host "1. rp_downtown_v2 map (Workshop ID: $DowntownMapId)" -ForegroundColor Cyan
+Write-Host "1. rp_downtown_v4c_v2 map (from GitHub)" -ForegroundColor Cyan
 Write-Host "2. DarkRP Mod Collection (Collection ID: $DarkRPCollectionId)" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Note: The collection will be downloaded automatically" -ForegroundColor Gray
@@ -55,10 +58,10 @@ if ($Confirm -ne "" -and $Confirm -ne "Y" -and $Confirm -ne "y") {
     exit
 }
 
-# Download the map
+# Download the map from GitHub
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "Downloading rp_downtown_v2 map..." -ForegroundColor Cyan
+Write-Host "Downloading rp_downtown_v4c_v2 map from GitHub..." -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 
 $MapsPath = Join-Path $ServerPath "garrysmod\maps"
@@ -66,52 +69,47 @@ if (-not (Test-Path $MapsPath)) {
     New-Item -ItemType Directory -Path $MapsPath -Force | Out-Null
 }
 
-$DownloadScript = Join-Path $SteamCMDPath "download_map_$DowntownMapId.txt"
-$ScriptContent = @"
-@ShutdownOnFailedCommand 1
-@NoPromptForPassword 1
-login anonymous
-workshop_download_item 4000 $DowntownMapId
-quit
-"@
+$MapFilePath = Join-Path $MapsPath "$MapName.bsp"
 
-$ScriptContent | Out-File -FilePath $DownloadScript -Encoding ASCII
-
-Push-Location $SteamCMDPath
 try {
-    $ScriptName = Split-Path $DownloadScript -Leaf
-    Write-Host "Downloading map from Workshop..." -ForegroundColor Yellow
-    & $SteamCMDExe "+runscript" $ScriptName
-    $ExitCode = $LASTEXITCODE
+    Write-Host "Downloading map from GitHub..." -ForegroundColor Yellow
+    Write-Host "URL: $MapGitHubUrl" -ForegroundColor Gray
     
-    if ($ExitCode -eq 0) {
-        Write-Host "Map downloaded successfully!" -ForegroundColor Green
+    # Download the BSP file
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri $MapGitHubUrl -OutFile $MapFilePath -UseBasicParsing
+    
+    if (Test-Path $MapFilePath) {
+        $FileSize = (Get-Item $MapFilePath).Length / 1MB
+        Write-Host "Map downloaded successfully! ($([math]::Round($FileSize, 2)) MB)" -ForegroundColor Green
+        Write-Host "  Installed map: $MapName.bsp" -ForegroundColor Green
         
-        # Copy map files to maps directory
-        $SteamWorkshopPath = Join-Path $SteamCMDPath "steamapps\workshop\content\4000\$DowntownMapId"
-        if (Test-Path $SteamWorkshopPath) {
-            $BspFiles = Get-ChildItem $SteamWorkshopPath -Filter "*.bsp" -Recurse
-            foreach ($BspFile in $BspFiles) {
-                Copy-Item $BspFile.FullName -Destination $MapsPath -Force
-                Write-Host "  Installed map: $($BspFile.Name)" -ForegroundColor Green
+        # Try to download .nav file if it exists
+        $NavGitHubUrl = "https://github.com/KryptonNetworks/rp_downtown_v4c_v2/raw/master/rp_downtown_v4c_v2.nav"
+        $NavFilePath = Join-Path $MapsPath "$MapName.nav"
+        
+        try {
+            Invoke-WebRequest -Uri $NavGitHubUrl -OutFile $NavFilePath -UseBasicParsing -ErrorAction Stop
+            if (Test-Path $NavFilePath) {
+                Write-Host "  Installed nav: $MapName.nav" -ForegroundColor Gray
             }
-            
-            # Also copy .nav files if they exist
-            $NavFiles = Get-ChildItem $SteamWorkshopPath -Filter "*.nav" -Recurse
-            foreach ($NavFile in $NavFiles) {
-                Copy-Item $NavFile.FullName -Destination $MapsPath -Force
-                Write-Host "  Installed nav: $($NavFile.Name)" -ForegroundColor Gray
-            }
+        }
+        catch {
+            Write-Host "  Note: Navigation file (.nav) not found, skipping..." -ForegroundColor Gray
         }
     }
     else {
-        Write-Host "Warning: Map download failed (Exit code: $ExitCode)" -ForegroundColor Yellow
-        Write-Host "The map will be downloaded automatically when the server starts." -ForegroundColor Gray
+        Write-Host "Warning: Map download failed" -ForegroundColor Yellow
+        Write-Host "The map will need to be downloaded manually." -ForegroundColor Gray
     }
 }
-finally {
-    Pop-Location
-    Remove-Item $DownloadScript -Force -ErrorAction SilentlyContinue
+catch {
+    Write-Host "Error downloading map from GitHub: $_" -ForegroundColor Red
+    Write-Host "You may need to download the map manually from:" -ForegroundColor Yellow
+    Write-Host "  $MapGitHubUrl" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "Or download from Steam Workshop and place it in:" -ForegroundColor Yellow
+    Write-Host "  $MapsPath" -ForegroundColor Gray
 }
 
 Write-Host ""
@@ -138,5 +136,5 @@ Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
 Write-Host "1. Start your server with: .\start-server.bat" -ForegroundColor Cyan
 Write-Host "2. The collection addons will download automatically" -ForegroundColor Gray
-Write-Host "3. The server will use rp_downtown_v2 as the default map" -ForegroundColor Gray
+Write-Host "3. The server will use rp_downtown_v4c_v2 as the default map" -ForegroundColor Gray
 
