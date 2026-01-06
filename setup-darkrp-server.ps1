@@ -1286,7 +1286,7 @@ if not exist "srcds.exe" (
     pause
     exit /b 1
 )
-srcds.exe -console -game garrysmod +gamemode darkrp +map rp_downtown_v2 +maxplayers 32 +host_workshop_collection 2079133718$SteamTokenParam
+srcds.exe -console -game garrysmod +gamemode darkrp +map rp_downtown_v4c_v2 +maxplayers 32 +host_workshop_collection 2079133718$SteamTokenParam
 pause
 "@
     
